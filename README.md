@@ -10,7 +10,7 @@ add `"<script>` to `hubot-scripts.json`
 
 just write a `pod` in source code
 
-```pod
+```perl
 =head1 SYNOPSIS
 
   hubot: usage here
