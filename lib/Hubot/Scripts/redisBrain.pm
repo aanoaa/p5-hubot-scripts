@@ -29,7 +29,15 @@ sub load {
 
 =head1 SYNOPSIS
 
-None
+=head1 CONFIGURATION
+
+=over
+
+=item REDIS_SERVER
+
+C<127.0.0.1:6379> is default to use.
+
+=back
 
 =head1 AUTHOR
 
