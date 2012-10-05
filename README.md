@@ -6,6 +6,17 @@
 
 add `"<script>"` to `hubot-scripts.json`
 
+### run for test? ###
+
+    $ git clone git://github.com/aanoaa/p5-hubot-scripts.git
+    $ cd p5-hubot-scripts/
+    $ cpanm --installdeps .    # fail? add `--no-test` option and again
+    $ cd lib/
+    $ export PERL5LIB=`pwd`
+    $ cd /path/to/p5-hubot/
+    # edit `hubot-scripts.json`
+    $ perl -Ilib bin/hubot
+
 ### Documentation ###
 
 just write a `pod` in source code
