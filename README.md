@@ -4,7 +4,7 @@
 
     $ cpanm Hubot::Scripts::<script>    # not working yet, no Hubot modules in CPAN
 
-add `"<script>` to `hubot-scripts.json`
+add `"<script>"` to `hubot-scripts.json`
 
 ### Documentation ###
 
