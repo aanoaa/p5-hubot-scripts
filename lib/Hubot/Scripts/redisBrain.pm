@@ -11,9 +11,10 @@ sub load {
     print "connected to redis-server\n" if $ENV{DEBUG};
     my $json = $redis->get('hubot:storage');
     $robot->brain->mergeData(decode_json($json));
-    $robot->brain->cb_save(
+    $robot->brain->on(
+        'save',
         sub {
-            my $data = shift;
+            my ($e, $data) = @_;
             for my $key (keys %{ $data->{users} }) {
                 unbless $data->{users}{$key};
             }
@@ -22,7 +23,7 @@ sub load {
             $redis->set('hubot:storage', $json);
         }
     );
-    $robot->brain->cb_close( sub { $redis->quit } );
+    $robot->brain->on( 'close', sub { $redis->quit } );
 }
 
 1;
@@ -38,6 +39,10 @@ sub load {
 C<127.0.0.1:6379> is default to use.
 
 =back
+
+=head1 SEE ALSO
+
+L<https://github.com/github/hubot-scripts/blob/master/src/scripts/redis-brain.coffee>
 
 =head1 AUTHOR
 
