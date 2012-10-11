@@ -10,7 +10,6 @@ sub load {
         sub {
             shift->send('Goodbye, cruel world.');
             $robot->shutdown;
-            exit;
         }
     );
 }
