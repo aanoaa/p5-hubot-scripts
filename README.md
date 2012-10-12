@@ -48,3 +48,11 @@ Hyungsuk Hong <hshong@perl.kr>
 ```
 
 `cpan` or `cpanm` command will help dependency problem at install time
+
+### Make your own script for Dist::Zilla user ###
+
+make sure copy `misc/dzil/profiles/hubot` directory to `$HOME/.dzil/profiles`
+
+```bash
+$ dzil new -p hubot Hubot::Script::awesome
+```
