@@ -3,10 +3,10 @@ use strict;
 use warnings;
 use Redis;
 use JSON::XS;
-use Data::Structure::Util qw( unbless );
 
 sub load {
     my ( $class, $robot ) = @_;
+    my $coder = JSON::XS->new->convert_blessed;
     my $redis = Redis->new(server => $ENV{REDIS_SERVER} || '127.0.0.1:6379');
     print "connected to redis-server\n" if $ENV{DEBUG};
     my $json = $redis->get('hubot:storage');
@@ -15,11 +15,7 @@ sub load {
         'save',
         sub {
             my ($e, $data) = @_;
-            for my $key (keys %{ $data->{users} }) {
-                unbless $data->{users}{$key};
-            }
-
-            my $json = encode_json($data);
+            my $json = $coder->encode($data);
             $redis->set('hubot:storage', $json);
         }
     );
