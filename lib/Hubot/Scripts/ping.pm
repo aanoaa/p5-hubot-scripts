@@ -16,8 +16,17 @@ sub load {
 
 1;
 
+=head1 NAME
+
+Hubot::Scripts::ping
+
 =head1 SYNOPSIS
 
-  hubot: ping
+    hubot ping - bot will pong me
+    hubot die - shutdown robot
+
+=head1 AUTHOR
+
+Hyungsuk Hong <hshong@perl.kr>
 
 =cut

@@ -24,6 +24,10 @@ sub load {
 
 1;
 
+=head1 NAME
+
+Hubot::Scripts::redisBrain
+
 =head1 SYNOPSIS
 
 =head1 CONFIGURATION

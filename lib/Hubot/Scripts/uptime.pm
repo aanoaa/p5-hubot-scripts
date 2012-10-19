@@ -29,8 +29,16 @@ sub uptimeMe {
 
 1;
 
+=head1 NAME
+
+Hubot::Scripts::uptime
+
 =head1 SYNOPSIS
 
-  hubot: uptime
+  hubot uptime - display robot's uptime
+
+=head1 AUTHOR
+
+Hyungsuk Hong <hshong@perl.kr>
 
 =cut
