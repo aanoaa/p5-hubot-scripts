@@ -29,6 +29,29 @@ so scripts would be increase. I don't know how many there are.
 maintaining various distribution is not easy.
 so C<foo>, C<bar>, C<baz>, C<..> scripts will be added to this.
 
+=head1 SCRIPTS
+
+=over
+
+=item redisBrain
+
+using redis as an external storage for robot's brain
+
+=item ping
+
+    me> hubot: ping
+    hubot> me: PONG
+    me> hubot: die
+    hubot> Goodbye, cruel world.
+    * hubot has quit
+
+=item uptime
+
+    me> hubot: uptime
+    hubot> I've been sentient for 0 years, 00 months, 2 days, 00 hours, 252 minutes, 07 seconds
+
+=back
+
 =head1 SEE ALSO
 
 L<https://github.com/aanoaa/p5-hubot-scripts>
