@@ -7,7 +7,7 @@ sub load {
     $robot->whisper(
         sub {
             my $msg = shift;
-            $msg->send($msg->message->text);
+            $msg->send( $msg->message->text );
         }
     );
 }
