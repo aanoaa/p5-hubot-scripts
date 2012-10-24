@@ -1,9 +1,9 @@
 package Hubot::Scripts::redisBrain;
-use utf8;
 use strict;
 use warnings;
 use Redis;
 use JSON::XS;
+use Encode qw/encode_utf8 decode_utf8/;
 
 sub load {
     my ( $class, $robot ) = @_;
@@ -11,13 +11,13 @@ sub load {
     my $redis = Redis->new(server => $ENV{REDIS_SERVER} || '127.0.0.1:6379');
     print "connected to redis-server\n" if $ENV{DEBUG};
     my $json = $redis->get('hubot:storage');
-    $robot->brain->mergeData(decode_json($json));
+    $robot->brain->mergeData(decode_json(decode_utf8($json)));
     $robot->brain->on(
         'save',
         sub {
             my ($e, $data) = @_;
             my $json = $coder->encode($data);
-            $redis->set('hubot:storage', $json);
+            $redis->set('hubot:storage', encode_utf8($json));
         }
     );
     $robot->brain->on( 'close', sub { $redis->quit } );
