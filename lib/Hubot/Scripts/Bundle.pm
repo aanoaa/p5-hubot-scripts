@@ -1,3 +1,7 @@
+package Hubot::Scripts::Bundle;
+
+1;
+
 =pod
 
 =encoding utf-8
