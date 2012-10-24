@@ -11,20 +11,20 @@ sub load {
         qr/uptime/i,
         sub {
             my $msg = shift;
-            uptimeMe($msg, $start, sub { $msg->send(shift) } );
+            uptimeMe( $msg, $start, sub { $msg->send(shift) } );
         }
     );
 }
 
 sub uptimeMe {
-    my ($msg, $start, $cb) = @_;
-    my $now = DateTime->now;
+    my ( $msg, $start, $cb ) = @_;
+    my $now      = DateTime->now;
     my $duration = $now - $start;
-    my $d = DateTime::Format::Duration->new(
-        pattern => '%Y years, %m months, %e days, '.
-            '%H hours, %M minutes, %S seconds'
-        );
-    $cb->("I've been sentient for " . $d->format_duration($duration));
+    my $d =
+      DateTime::Format::Duration->new(
+        pattern => '%Y years, %m months, %e days, '
+          . '%H hours, %M minutes, %S seconds' );
+    $cb->( "I've been sentient for " . $d->format_duration($duration) );
 }
 
 1;

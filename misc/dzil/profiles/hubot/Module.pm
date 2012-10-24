@@ -1,9 +1,12 @@
-package {{$name}};
-{{
-    use strict;
-    use vars '$foo';
-    $Text::Template::SILENTLY; # same as '';
-}}
+package { {$name} };
+{
+    {
+        use strict;
+        use vars '$foo';
+        $Text::Template::SILENTLY;    # same as '';
+    }
+}
+
 # ABSTRACT: {{$name}}
 use strict;
 use warnings;
@@ -13,11 +16,11 @@ sub load {
 
     ## robot respond only called its name first. `hubot xxx`
     $robot->respond(
-        qr/pattern (.*)?$/i, # (.*) will captured as `$msg->match->[0]`
+        qr/pattern (.*)?$/i,    # (.*) will captured as `$msg->match->[0]`
         sub {
-            my $msg  = shift;    # Hubot::Response
-            $msg->send('hi');    # hubot> hi
-            $msg->reply('hi');   # hubot> user: hi
+            my $msg = shift;      # Hubot::Response
+            $msg->send('hi');     # hubot> hi
+            $msg->reply('hi');    # hubot> user: hi
         }
     );
 
@@ -25,13 +28,12 @@ sub load {
     $robot->hear(
         qr/^pattern (.*)?$/i,
         sub {
-            my $msg  = shift;    # Hubot::Response
+            my $msg = shift;      # Hubot::Response
         }
     );
 }
 
 1;
-
 
 =pod
 
