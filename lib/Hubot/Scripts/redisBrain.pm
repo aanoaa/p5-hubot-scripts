@@ -1,4 +1,5 @@
 package Hubot::Scripts::redisBrain;
+use utf8;
 use strict;
 use warnings;
 use Redis;
