@@ -1,0 +1,4 @@
+go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
+
+0.0.2    Wed Oct 24 19:11:40 2012 KST
+    - encode, decode utf8 at get, set time
