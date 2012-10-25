@@ -10,7 +10,7 @@ sub load {
     my $coder = JSON::XS->new->convert_blessed;
     my $redis = Redis->new( server => $ENV{REDIS_SERVER} || '127.0.0.1:6379' );
     print "connected to redis-server\n" if $ENV{DEBUG};
-    my $json = $redis->get('hubot:storage');
+    my $json = $redis->get('hubot:storage') || '{}';
     $robot->brain->mergeData( decode_json( decode_utf8($json) ) );
     $robot->brain->on(
         'save',
