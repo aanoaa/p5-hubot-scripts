@@ -29,7 +29,7 @@ sub load {
                     my ( $body, $hdr ) = @_;
                     return if ( !$body || $hdr->{Status} !~ m/^2/ );
                     my $data = decode_json($body);
-                    $msg->send( $data->{stdout} || $data->{stderr} );
+                    $msg->send( split /\n/, $data->{stdout} || $data->{stderr} );
                 }
               );
             delete $robot->brain->{eval}{ $msg->message->user->{name} };
@@ -59,7 +59,7 @@ sub load {
                         my ( $body, $hdr ) = @_;
                         return if ( !$body || $hdr->{Status} !~ m/^2/ );
                         my $data = decode_json($body);
-                        $msg->send( $data->{stdout} || $data->{stderr} );
+                        $msg->send( split /\n/, $data->{stdout} || $data->{stderr} );
                     }
                   );
             }
@@ -91,8 +91,9 @@ Hubot::Scripts::eval
 =head1 SYNOPSIS
 
     eval <code> - evaluate <code> and show the result
-    eval on - starting record
+    eval on - start recording
     eval off|finish|done - evaluate recorded <code> and show the result
+    eval cancel - cancel recording
 
 =head1 AUTHOR
 
