@@ -9,7 +9,7 @@ sub load {
         qr/^eval:? on *$/i,
         sub {
             my $msg = shift;
-            $robot->brain->{eval}{ $msg->message->user->{name} }{recording} = 1;
+            $robot->brain->{data}{eval}{ $msg->message->user->{name} }{recording} = 1;
             $msg->send( 'OK, recording '
                   . $msg->message->user->{name}
                   . "'s codes for evaluate" );
@@ -21,7 +21,7 @@ sub load {
         sub {
             my $msg  = shift;
             my $code = join "\n",
-              @{ $robot->brain->{eval}{ $msg->message->user->{name} }{code} ||=
+              @{ $robot->brain->{data}{eval}{ $msg->message->user->{name} }{code} ||=
                   [] };
             $msg->http('http://api.dan.co.jp/lleval.cgi')
               ->query( { s => "#!/usr/bin/perl\n$code" } )->get(
@@ -32,7 +32,7 @@ sub load {
                     $msg->send( split /\n/, $data->{stdout} || $data->{stderr} );
                 }
               );
-            delete $robot->brain->{eval}{ $msg->message->user->{name} };
+            delete $robot->brain->{data}{eval}{ $msg->message->user->{name} };
         }
     );
 
@@ -40,7 +40,7 @@ sub load {
         qr/^eval:? cancel *$/i,
         sub {
             my $msg = shift;
-            delete $robot->brain->{eval}{ $msg->message->user->{name} };
+            delete $robot->brain->{data}{eval}{ $msg->message->user->{name} };
             $msg->send( 'canceled '
                   . $msg->message->user->{name}
                   . "'s evaluation recording" );
@@ -69,11 +69,11 @@ sub load {
     $robot->catchAll(
         sub {
             my $msg = shift;
-            if ( $robot->brain->{eval}{ $msg->message->user->{name} }{recording}
+            if ( $robot->brain->{data}{eval}{ $msg->message->user->{name} }{recording}
               )
             {
                 if ( ref $msg->message eq 'Hubot::TextMessage' ) {
-                    push @{ $robot->brain->{eval}{ $msg->message->user->{name} }
+                    push @{ $robot->brain->{data}{eval}{ $msg->message->user->{name} }
                           {code} ||= [] }, $msg->message->text
                       if $msg->message->text !~ /^eval:? on *$/;
                 }
