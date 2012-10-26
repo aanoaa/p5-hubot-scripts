@@ -20,7 +20,8 @@ example F<hubot-scripts.json>
         "ping",
         "uptime",
         "whisper",
-        "eval"
+        "eval",
+	"tell"
     ]
 
 and then,
