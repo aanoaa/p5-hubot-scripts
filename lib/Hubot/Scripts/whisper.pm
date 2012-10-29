@@ -7,6 +7,7 @@ sub load {
     $robot->whisper(
         sub {
             my $msg = shift;
+            return if $msg->message->user->{name} eq '*';
             $msg->send( $msg->message->text );
         }
     );
