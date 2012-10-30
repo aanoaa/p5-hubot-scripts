@@ -48,7 +48,7 @@ Hubot::Scripts::tell
 
 =head1 SYNOPSIS
 
-    tell <user> <message> - pass <message> on when <user> is around.
+    hubot tell <user> <message> - pass <message> on when <user> is around.
 
 =head1 AUTHOR
 
