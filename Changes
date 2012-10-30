@@ -1,7 +1,13 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
+0.0.5    Tue Oct 30 10:42:14 2012 KST
+    - [eval] support multiple output
+    - [eval] replace brain storing place
+    - bug fix
+      - ignore IRC SERVER's whisper message
+
 0.0.4    Fri Oct 26 00:55:31 2012 KST
-    - fix bug
+    - bug fix
       - if `hubot:storage` is unset, redisBrain is not working
     - add `eval` script
 
