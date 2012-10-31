@@ -32,6 +32,23 @@ sub load {
             );
         }
     );
+
+    $robot->hear(
+        qr/^bug search (.+)/,
+        sub {
+            my $msg = shift;
+            $client->call(
+                'Bug.search',
+                { summary =>  $msg->match->[0] },
+                sub {
+                    my ($body, $hdr) = @_;
+                    my $data = decode_json($body);
+                    my $bug = @{ $data->{result}{bugs} ||= [] }[0];
+                    $msg->send(sprintf "#%s %s - [%s, %s, %s]", $bug->{id}, $bug->{summary}, $bug->{status}, $bug->{assigned_to}, $PRIORITY_MAP{$bug->{priority}}) if $bug;
+                }
+            );
+        }
+    );
 }
 
 package JSONRPC;
