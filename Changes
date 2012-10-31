@@ -1,6 +1,9 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
-0.0.6    Wed Oct 31 12:36:44 2012
+0.0.7    Wed Oct 31 12:46:53 2012 KST
+    - remove needless module dependencies
+
+0.0.6    Wed Oct 31 12:36:44 2012 KST
     - add [tell] script
     - add [bugzilla] script
 
