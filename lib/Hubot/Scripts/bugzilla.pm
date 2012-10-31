@@ -56,7 +56,6 @@ use strict;
 use warnings;
 use AnyEvent::HTTP::ScopedClient;
 use JSON::XS;
-use Data::Printer;
 
 sub new {
     my ($class, $ref) = @_;
