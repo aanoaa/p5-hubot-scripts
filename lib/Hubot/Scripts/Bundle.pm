@@ -21,7 +21,7 @@ example F<hubot-scripts.json>
         "uptime",
         "whisper",
         "eval",
-	"tell"
+	    "tell"
     ]
 
 and then,
@@ -71,6 +71,17 @@ speak <text> behind hubot
     hubot> v5.14.2
 
 evaluate <code> and show the result via L<http://api.dan.co.jp/lleval.cgi>
+
+=item tell
+
+Tell Hubot to send a user a message when present in the room
+
+    me> hubot tell <user> <message>
+
+=item bugzilla
+
+    me> bug <id>|<keyword>
+    me> bug search <keyword>
 
 =back
 
