@@ -43,3 +43,13 @@ make sure copy `misc/dzil/profiles/hubot` directory to `$HOME/.dzil/profiles`
 ```bash
 $ dzil new -p hubot Hubot::Script::awesome
 ```
+
+### How test your script ###
+
+- use `Shell` adapter
+- add `script` to `hubot-scripts.json`
+- make sure Perl knows your `p5-hubot-scripts/lib` path
+
+    $ cd /path/to/p5-hubot-scripts/
+    $ export PERL5LIB=./lib
+    $ hubot
