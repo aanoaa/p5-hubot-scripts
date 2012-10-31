@@ -1,5 +1,9 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
+0.0.6    Wed Oct 31 12:36:44 2012
+    - add [tell] script
+    - add [bugzilla] script
+
 0.0.5    Tue Oct 30 10:42:14 2012 KST
     - [eval] support multiple output
     - [eval] replace brain storing place
