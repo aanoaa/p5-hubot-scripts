@@ -50,6 +50,8 @@ $ dzil new -p hubot Hubot::Script::awesome
 - add `script` to `hubot-scripts.json`
 - make sure Perl knows your `p5-hubot-scripts/lib` path
 
-    $ cd /path/to/p5-hubot-scripts/
-    $ export PERL5LIB=./lib
-    $ hubot
+```bash
+$ cd /path/to/p5-hubot-scripts/
+$ export PERL5LIB=./lib
+$ hubot
+```
