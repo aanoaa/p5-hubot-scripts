@@ -12,7 +12,7 @@ my $robot = Hubot::Robot->new(
     }
 );
 
-$robot->loadHubotScripts( [ "help", "roles" ] );
+$robot->loadHubotScripts( [ "help", "bugzilla" ] );
 push @{ $robot->{receive} }, 'hubot help bug';
 $robot->run;
 
