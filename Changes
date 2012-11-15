@@ -1,5 +1,9 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
+0.0.8    Thu Nov 15 18:44:01 2012 KST
+    - add summary on url feature to bugzilla
+    - enhance README
+
 0.0.7    Wed Oct 31 12:46:53 2012 KST
     - remove needless module dependencies
 
