@@ -4,16 +4,17 @@ use strict;
 use warnings;
 use JSON::XS;
 
+my %PRIORITY_MAP = (
+    '---'   => '☆☆☆☆☆',
+    Lowest  => '★☆☆☆☆',
+    Low     => '★★☆☆☆',
+    Normal  => '★★★☆☆',
+    High    => '★★★★☆',
+    Highest => '★★★★★',
+);
+
 sub load {
-    my $client = JSONRPC->new({ url => $ENV{HUBOT_BZ_JSONPRC_URL} });
-    my %PRIORITY_MAP = (
-        '---'   => '☆☆☆☆☆',
-        Lowest  => '★☆☆☆☆',
-        Low     => '★★☆☆☆',
-        Normal  => '★★★☆☆',
-        High    => '★★★★☆',
-        Highest => '★★★★★',
-    );
+    my $client = JSONRPC->new( { url => $ENV{HUBOT_BZ_JSONPRC_URL} } );
 
     my ( $class, $robot ) = @_;
     $robot->hear(
@@ -22,12 +23,10 @@ sub load {
             my $msg = shift;
             $client->call(
                 'Bug.get',
-                { ids => [$msg->match->[0]] },
+                { ids => [ $msg->match->[0] ] },
                 sub {
-                    my ($body, $hdr) = @_;
-                    my $data = decode_json($body);
-                    my $bug = @{ $data->{result}{bugs} ||= [] }[0];
-                    $msg->send(sprintf "#%s %s - [%s, %s, %s]", $bug->{id}, $bug->{summary}, $bug->{status}, $bug->{assigned_to}, $PRIORITY_MAP{$bug->{priority}}) if $bug;
+                    my ( $body, $hdr ) = @_;
+                    speak_bug( $msg, $body, $hdr );
                 }
             );
         }
@@ -39,16 +38,40 @@ sub load {
             my $msg = shift;
             $client->call(
                 'Bug.search',
-                { summary =>  $msg->match->[0] },
+                { summary => $msg->match->[0] },
                 sub {
-                    my ($body, $hdr) = @_;
-                    my $data = decode_json($body);
-                    my $bug = @{ $data->{result}{bugs} ||= [] }[0];
-                    $msg->send(sprintf "#%s %s - [%s, %s, %s]", $bug->{id}, $bug->{summary}, $bug->{status}, $bug->{assigned_to}, $PRIORITY_MAP{$bug->{priority}}) if $bug;
+                    my ( $body, $hdr ) = @_;
+                    speak_bug( $msg, $body, $hdr );
                 }
             );
         }
     );
+
+    $robot->hear(
+        qr/show_bug\.cgi\?id=([0-9]+)$/,
+        sub {
+            my $msg = shift;
+            $msg->message->finish;
+            $client->call(
+                'Bug.get',
+                { ids => [ $msg->match->[0] ] },
+                sub {
+                    my ( $body, $hdr ) = @_;
+                    speak_bug( $msg, $body, $hdr );
+                }
+            );
+        }
+    );
+}
+
+sub speak_bug {
+    my ( $msg, $body, $hdr ) = @_;
+    my $data = decode_json($body);
+    my $bug = @{ $data->{result}{bugs} ||= [] }[0];
+    $msg->send( sprintf "#%s %s - [%s, %s, %s]",
+        $bug->{id}, $bug->{summary}, $bug->{status}, $bug->{assigned_to},
+        $PRIORITY_MAP{ $bug->{priority} } )
+      if $bug;
 }
 
 package JSONRPC;
@@ -58,8 +81,8 @@ use AnyEvent::HTTP::ScopedClient;
 use JSON::XS;
 
 sub new {
-    my ($class, $ref) = @_;
-    $ref->{http} = AnyEvent::HTTP::ScopedClient->new($ref->{url});
+    my ( $class, $ref ) = @_;
+    $ref->{http} = AnyEvent::HTTP::ScopedClient->new( $ref->{url} );
     $ref->{username} ||= $ENV{HUBOT_BZ_USERNAME};
     $ref->{password} ||= $ENV{HUBOT_BZ_PASSWORD};
     my $self = bless $ref, $class;
@@ -68,24 +91,27 @@ sub new {
 }
 
 sub call {
-    my ($self, $method, $params, $cb) = @_;
-    $params = encode_json({ method => $method, params => $params, version => '1.1' });
-    $self->{http}->header({
-        cookie => $self->{cookie} || '',
-        Accept => 'application/json',
-        'Content-Type' => 'application/json',
-        'User-Agent' => 'p5-hubot-bugzilla-script-jsonrpc-client',
-    })->post(
+    my ( $self, $method, $params, $cb ) = @_;
+    $params =
+      encode_json( { method => $method, params => $params, version => '1.1' } );
+    $self->{http}->header(
+        {
+            cookie => $self->{cookie} || '',
+            Accept => 'application/json',
+            'Content-Type' => 'application/json',
+            'User-Agent'   => 'p5-hubot-bugzilla-script-jsonrpc-client',
+        }
+      )->post(
         $params,
         sub {
-            my ($body, $hdr) = @_;
-            $cb->($body, $hdr) if $hdr->{Status} =~ m/^2/;
+            my ( $body, $hdr ) = @_;
+            $cb->( $body, $hdr ) if $hdr->{Status} =~ m/^2/;
         }
-    );
+      );
 }
 
 sub set_cookies {
-    my ($self, $hdr) = @_;
+    my ( $self, $hdr ) = @_;
     $self->{cookie} = $hdr->{'set-cookie'};
 }
 
@@ -94,10 +120,11 @@ sub login {
     $self->call(
         'User.login',
         {
-            login => $self->{username},
+            login    => $self->{username},
             password => $self->{password}
-        }, sub {
-            my ($body, $hdr) = @_;
+        },
+        sub {
+            my ( $body, $hdr ) = @_;
             $self->set_cookies($hdr);
         }
     );
