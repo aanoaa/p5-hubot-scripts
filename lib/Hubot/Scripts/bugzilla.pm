@@ -86,7 +86,7 @@ sub new {
     $ref->{username} ||= $ENV{HUBOT_BZ_USERNAME};
     $ref->{password} ||= $ENV{HUBOT_BZ_PASSWORD};
     my $self = bless $ref, $class;
-    $self->login;
+    $self->login if $ref->{username} && $ref->{password};
     return $self;
 }
 
