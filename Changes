@@ -1,5 +1,8 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
+0.0.10    Fri Nov 16 17:07:00 2012 KST
+    - add googleImage script and test
+
 0.0.9    Thu Nov 15 23:30:36 2012 KST
     - add test scripts & module
     - check env before using in bugzilla script
