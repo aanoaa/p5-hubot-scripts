@@ -13,12 +13,7 @@ my $robot = Hubot::Robot->new(
 
 $robot->loadHubotScripts( [ "help", "ping" ] );
 
-push @{ $robot->{receive} },
-  (
-    'hubot help ping',
-    'hubot ping',
-    'hubot die',
-  );
+push @{ $robot->{receive} }, ( 'hubot help ping', 'hubot ping', 'hubot die', );
 
 $robot->run;
 

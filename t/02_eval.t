@@ -14,11 +14,7 @@ my $robot = Hubot::Robot->new(
 $robot->loadHubotScripts( [ "help", "eval" ] );
 $robot->adapter->interval(3);
 
-push @{ $robot->{receive} },
-  (
-    'hubot help eval',
-    "eval print 1+1;",
-  );
+push @{ $robot->{receive} }, ( 'hubot help eval', "eval print 1+1;", );
 
 $robot->run;
 

@@ -13,11 +13,7 @@ my $robot = Hubot::Robot->new(
 
 $robot->loadHubotScripts( [ "help", "uptime" ] );
 
-push @{ $robot->{receive} },
-  (
-    'hubot help uptime',
-    'hubot uptime',
-  );
+push @{ $robot->{receive} }, ( 'hubot help uptime', 'hubot uptime', );
 
 $robot->run;
 

@@ -17,11 +17,7 @@ $robot->adapter->interval(0.2);
 $robot->userForId( 'misskim', {} );
 
 push @{ $robot->{receive} },
-  (
-    'hubot help tell',
-    'hubot tell misskim hi',
-    'hubot tell aanoaa hi',
-  );
+  ( 'hubot help tell', 'hubot tell misskim hi', 'hubot tell aanoaa hi', );
 
 $robot->run;
 

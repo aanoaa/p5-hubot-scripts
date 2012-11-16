@@ -9,7 +9,7 @@ sub load {
         qr/(image|img)( me)? (.*)/i,
         sub {
             my $msg = shift;
-            imageMe($msg, $msg->match->[2], sub { $msg->send(shift) });
+            imageMe( $msg, $msg->match->[2], sub { $msg->send(shift) } );
         }
     );
 
@@ -17,47 +17,50 @@ sub load {
         qr/animate(?: me)? (.*)/i,
         sub {
             my $msg = shift;
-            imageMe($msg, $msg->match->[0], 1, sub { $msg->send(shift) });
+            imageMe( $msg, $msg->match->[0], 1, sub { $msg->send(shift) } );
         }
     );
 
     $robot->respond(
         qr/(?:mo?u)?sta(?:s|c)he?(?: me)? (.*)/i,
         sub {
-            my $msg = shift;
-            my $type = int(rand(3));
+            my $msg        = shift;
+            my $type       = int( rand(3) );
             my $mustachify = "http://mustachify.me/$type?src=";
-            my $imagery = $msg->match->[0];
+            my $imagery    = $msg->match->[0];
 
-            if ($imagery =~ /https?:\/\//i) {
+            if ( $imagery =~ /https?:\/\//i ) {
                 $msg->send("$mustachify$imagery");
-            } else {
-                imageMe($msg, $imagery, 0, 1, sub { $msg->send("$mustachify$imagery") });
+            }
+            else {
+                imageMe( $msg, $imagery, 0, 1,
+                    sub { $msg->send("$mustachify$imagery") } );
             }
         }
     );
 }
 
 sub imageMe {
-    my ($msg, $query, $animated, $faces, $cb) = @_;
+    my ( $msg, $query, $animated, $faces, $cb ) = @_;
     $cb = $animated if ref $animated eq 'CODE';
     $cb = $faces if defined $faces && ref $faces eq 'CODE';
     my $q = { v => '1.0', rsz => '8', q => $query, safe => 'active' };
-    $q->{as_filetype} = 'gif' if defined $animated && ref $animated ne 'CODE' && $animated == 1;
-    $q->{imgtype} = 'face' if defined $faces && ref $faces ne 'CODE' && $faces == 1;
+    $q->{as_filetype} = 'gif'
+      if defined $animated && ref $animated ne 'CODE' && $animated == 1;
+    $q->{imgtype} = 'face'
+      if defined $faces && ref $faces ne 'CODE' && $faces == 1;
     $msg->http('http://ajax.googleapis.com/ajax/services/search/images')
-        ->query($q)
-        ->get(
-            sub {
-                my ($body, $hdr) = @_;
-                my $images = decode_json($body);
-                $images = $images->{responseData}{results};
-                if (@$images) {
-                    my $image = $msg->random(@$images);
-                    $cb->($image->{unescapedUrl});
-                }
+      ->query($q)->get(
+        sub {
+            my ( $body, $hdr ) = @_;
+            my $images = decode_json($body);
+            $images = $images->{responseData}{results};
+            if (@$images) {
+                my $image = $msg->random(@$images);
+                $cb->( $image->{unescapedUrl} );
             }
-        );
+        }
+      );
 }
 
 1;
