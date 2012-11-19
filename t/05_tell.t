@@ -29,7 +29,6 @@ $got = shift @{ $robot->{sent} };
 like( "@$got", qr/hi/, 'pass message directly if user exists' );
 
 $got = shift @{ $robot->{sent} };
-diag("@$got");
 like( "@$got", qr/OK/, 'robot should respond to telling message' );
 
 # TODO: should emit Hubot::EnterMessage
