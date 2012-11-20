@@ -115,8 +115,8 @@ Hubot::Scripts::blacklist
     hubot blacklist - show blacklist
     hubot blacklist add <pattern> - add pattern to blacklist
     hubot blacklist del <index> - delete pattern at blacklist[index]
-    hubot blacklist subscribe - robot will tell you when blacklist enter a room
-    hubot blacklist unsubscribe - robot will not tell you when blacklist enter a room anymore
+    hubot blacklist subscribe - robot will tell you when blacklist entering a room
+    hubot blacklist unsubscribe - robot will not tell you anymore when blacklist entering a room
 
 =head1 AUTHOR
 
