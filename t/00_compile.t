@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 10;
+use Test::More tests => 11;
 
 BEGIN { use_ok 'Hubot::Scripts::Bundle' }
 BEGIN { use_ok 'Hubot::Scripts::ping' }
@@ -11,3 +11,4 @@ BEGIN { use_ok 'Hubot::Scripts::tell' }
 BEGIN { use_ok 'Hubot::Scripts::bugzilla' }
 BEGIN { use_ok 'Hubot::Scripts::googleImage' }
 BEGIN { use_ok 'Hubot::Scripts::macboogi' }
+BEGIN { use_ok 'Hubot::Scripts::blacklist' }
