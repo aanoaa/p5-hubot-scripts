@@ -1,4 +1,6 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
+0.0.12    Wed Nov 21 01:10:55 2012 KST
+    - add `blacklist` script
 
 0.0.11    Mon Nov 19 20:47:21 2012 KST
     - add macboogify script and test
