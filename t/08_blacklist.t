@@ -16,12 +16,12 @@ $robot->loadHubotScripts( [ "help", "blacklist" ] );
 
 push @{ $robot->{receive} },
   (
-      'hubot help blacklist',
-      'hubot blacklist add hshong',
-      'hubot blacklist',
-      'hubot blacklist del 0',
-      'hubot blacklist subscribe',
-      'hubot blacklist unsubscribe',
+    'hubot help blacklist',
+    'hubot blacklist add hshong',
+    'hubot blacklist',
+    'hubot blacklist del 0',
+    'hubot blacklist subscribe',
+    'hubot blacklist unsubscribe',
   );
 
 $robot->run;
