@@ -7,10 +7,14 @@ sub load {
     my ( $class, $robot ) = @_;
     $robot->brain->{data}{blacklist}{subscriber} = {};
     $robot->brain->{data}{blacklist}{patterns} = [];
+    warn "you have to set env HUBOT_BLACKLIST_MANAGER" unless $ENV{HUBOT_BLACKLIST_MANAGER};
     $robot->respond(
         qr/blacklist add (.*)$/i,
         sub {
             my $msg = shift;
+
+            return unless checkPermission($robot, $msg);
+
             my $pattern = $msg->match->[0];
             try {
                 qr/$pattern/ and push @{ $robot->brain->{data}{blacklist}{patterns} }, $pattern;
@@ -44,6 +48,9 @@ sub load {
         qr/blacklist del(?:ete)? (\d+)$/i,
         sub {
             my $msg = shift;
+
+            return unless checkPermission($robot, $msg);
+
             my $index = $msg->match->[0];
             my @list = @{ $robot->brain->{data}{blacklist}{patterns} };
             if ($index > @list - 1) {
@@ -96,6 +103,25 @@ sub load {
     );
 }
 
+sub checkPermission {
+    my ($robot, $msg) = @_;
+    my @manager = split /,/, $ENV{HUBOT_BLACKLIST_MANAGER} || '';
+    unless (@manager) {
+        $msg->send("oops! no managers. " . $robot->name . "'s owner has to read the documentation");
+        return;
+    }
+
+    my $name = $msg->message->user->{name};
+    unless (grep { /$name/ } @manager) {
+        $msg->send("no managers: set HUBOT_BLACKLIST_MANAGER env");
+        $msg->send("you don't permission. ask to managers");
+        $msg->send($ENV{HUBOT_BLACKLIST_MANAGER});
+        return;
+    }
+
+    return 1;
+}
+
 sub notify {
     my ($robot, $res, $patt, @subs) = @_;
     for my $sub (@subs) {
@@ -117,6 +143,21 @@ Hubot::Scripts::blacklist
     hubot blacklist del <index> - delete pattern at blacklist[index]
     hubot blacklist subscribe - robot will tell you when blacklist entering a room
     hubot blacklist unsubscribe - robot will not tell you anymore when blacklist entering a room
+
+=head1 CONFIGURATION
+
+=over
+
+=item * HUBOT_BLACKLIST_MANAGER
+
+manager has permission which can add and delete to blacklist.
+separate by comma C<,>
+
+e.g.
+
+    export HUBOT_BLACKLIST_MANAGER='hshong,aanoaa'
+
+=back
 
 =head1 AUTHOR
 
