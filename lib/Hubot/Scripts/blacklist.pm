@@ -5,8 +5,8 @@ use Try::Tiny;
 
 sub load {
     my ( $class, $robot ) = @_;
-    $robot->brain->{data}{blacklist}{subscriber} = {};
-    $robot->brain->{data}{blacklist}{patterns} = [];
+    $robot->brain->{data}{blacklist}{subscriber} ||= {};
+    $robot->brain->{data}{blacklist}{patterns} ||= [];
     print STDERR "you have to set env HUBOT_BLACKLIST_MANAGER" unless $ENV{HUBOT_BLACKLIST_MANAGER};
     $robot->respond(
         qr/blacklist add (.*)$/i,
