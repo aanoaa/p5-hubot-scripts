@@ -7,7 +7,7 @@ sub load {
     my ( $class, $robot ) = @_;
     $robot->brain->{data}{blacklist}{subscriber} = {};
     $robot->brain->{data}{blacklist}{patterns} = [];
-    warn "you have to set env HUBOT_BLACKLIST_MANAGER" unless $ENV{HUBOT_BLACKLIST_MANAGER};
+    print STDERR "you have to set env HUBOT_BLACKLIST_MANAGER" unless $ENV{HUBOT_BLACKLIST_MANAGER};
     $robot->respond(
         qr/blacklist add (.*)$/i,
         sub {
