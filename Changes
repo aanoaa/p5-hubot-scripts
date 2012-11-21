@@ -1,5 +1,8 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
+0.0.14    Thu Nov 22 03:14:04 2012 KST
+    - add backup script
+
 0.0.13    Wed Nov 21 19:11:54 2012 KST
     - adjust blacklist help messages
     - add HUBOT_BLACKLIST_MANAGER env for managing blacklist
