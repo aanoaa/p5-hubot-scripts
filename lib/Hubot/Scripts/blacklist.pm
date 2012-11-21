@@ -113,9 +113,7 @@ sub checkPermission {
 
     my $name = $msg->message->user->{name};
     unless (grep { /$name/ } @manager) {
-        $msg->send("no managers: set HUBOT_BLACKLIST_MANAGER env");
-        $msg->send("you don't permission. ask to managers");
-        $msg->send($ENV{HUBOT_BLACKLIST_MANAGER});
+        $msg->send("you don't have permission. to add blacklist, asking to managers: $ENV{HUBOT_BLACKLIST_MANAGER}");
         return;
     }
 
