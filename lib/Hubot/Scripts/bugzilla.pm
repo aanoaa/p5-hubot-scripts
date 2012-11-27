@@ -68,8 +68,9 @@ sub speak_bug {
     my ( $msg, $body, $hdr ) = @_;
     my $data = decode_json($body);
     my $bug = @{ $data->{result}{bugs} ||= [] }[0];
-    $msg->send( sprintf "#%s %s - [%s, %s, %s]",
-        $bug->{id}, $bug->{summary}, $bug->{status}, $bug->{assigned_to},
+    $msg->send( sprintf "#%s [%s-%s] %s - [%s, %s, %s]",
+        $bug->{id}, $bug->{product}, $bug->{component},
+        $bug->{summary}, $bug->{status}, $bug->{assigned_to},
         $PRIORITY_MAP{ $bug->{priority} } )
       if $bug;
 }
