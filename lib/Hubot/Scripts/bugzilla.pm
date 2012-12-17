@@ -141,9 +141,9 @@ Hubot::Scripts::bugzilla
 
 =head1 SYNOPSIS
 
-    bug (<bug id>|<keyword>) - retrun bug summary, status, assignee and priority if exist
-    bug search <keyword>     - retrun bug summary, status, assignee and priority if exist
-    bug <number> - show the bug title.
+    bug(or bz) (<bug id>|<keyword>) - retrun bug summary, status, assignee and priority if exist
+    bug(or bz) search <keyword>     - retrun bug summary, status, assignee and priority if exist
+    bug(or bz) <number> - show the bug title. (support multiple)
 
 =head1 CONFIGURATION
 
