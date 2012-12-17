@@ -18,22 +18,24 @@ sub load {
 
     my ( $class, $robot ) = @_;
     $robot->hear(
-        qr/^bug ([0-9a-z-A-Z]+)/i,
+        qr/b(?:ug|z) ([0-9a-z-A-Z ]+)/i,
         sub {
             my $msg = shift;
-            $client->call(
-                'Bug.get',
-                { ids => [ $msg->match->[0] ] },
-                sub {
-                    my ( $body, $hdr ) = @_;
-                    speak_bug( $msg, $body, $hdr );
-                }
-            );
+            for my $query (split / /, $msg->match->[0]) {
+                $client->call(
+                    'Bug.get',
+                    { ids => [ $query ] },
+                    sub {
+                        my ( $body, $hdr ) = @_;
+                        speak_bug( $msg, $body, $hdr );
+                    }
+                );
+            }
         }
     );
 
     $robot->hear(
-        qr/^bug search (.+)/,
+        qr/^b(?:ug|z) search (.+)/,
         sub {
             my $msg = shift;
             $client->call(
@@ -48,7 +50,7 @@ sub load {
     );
 
     $robot->hear(
-        qr/show_bug\.cgi\?id=([0-9]+)$/,
+        qr/show_bug\.cgi\?id=([0-9]+)/,
         sub {
             my $msg = shift;
             $msg->message->finish;
