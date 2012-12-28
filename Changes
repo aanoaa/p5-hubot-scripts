@@ -1,5 +1,12 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
+0.1.0    Fri Dec 28 11:29:36 2012 KST
+    - [bugzilla] display product & component info
+    - [uptime] fix uptime return value to expected
+    - [tell] robot tell <message> immediately if <user> is around
+    - [bugzilla] support (bug|bz) <id> <query> ... - multiple search
+    - [bugzilla] update bz usage
+
 0.0.14    Thu Nov 22 03:14:04 2012 KST
     - add backup script
 
