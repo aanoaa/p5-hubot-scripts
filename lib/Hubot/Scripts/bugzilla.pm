@@ -21,10 +21,10 @@ sub load {
         qr/b(?:ug|z) ([0-9a-z-A-Z ]+)/i,
         sub {
             my $msg = shift;
-            for my $query (split / /, $msg->match->[0]) {
+            for my $query ( split / /, $msg->match->[0] ) {
                 $client->call(
                     'Bug.get',
-                    { ids => [ $query ] },
+                    { ids => [$query] },
                     sub {
                         my ( $body, $hdr ) = @_;
                         speak_bug( $msg, $body, $hdr );
@@ -70,11 +70,16 @@ sub speak_bug {
     my ( $msg, $body, $hdr ) = @_;
     my $data = decode_json($body);
     my $bug = @{ $data->{result}{bugs} ||= [] }[0];
-    $msg->send( sprintf "#%s [%s-%s] %s - [%s, %s, %s]",
-        $bug->{id}, $bug->{product}, $bug->{component},
-        $bug->{summary}, $bug->{status}, $bug->{assigned_to},
-        $PRIORITY_MAP{ $bug->{priority} } )
-      if $bug;
+    $msg->send(
+        sprintf "#%s [%s-%s] %s - [%s, %s, %s]",
+        $bug->{id},
+        $bug->{product},
+        $bug->{component},
+        $bug->{summary},
+        $bug->{status},
+        $bug->{assigned_to},
+        $PRIORITY_MAP{ $bug->{priority} }
+    ) if $bug;
 }
 
 package JSONRPC;

@@ -14,8 +14,7 @@ my $robot = Hubot::Robot->new(
 
 $robot->loadHubotScripts( [ "help", "backup" ] );
 
-push @{ $robot->{receive} },
-  ( 'hubot help save', 'hubot save' );
+push @{ $robot->{receive} }, ( 'hubot help save', 'hubot save' );
 
 $robot->run;
 

@@ -13,10 +13,7 @@ my $robot = Hubot::Robot->new(
 
 $robot->loadHubotScripts( [ "help", "blacklist" ] );
 
-push @{ $robot->{receive} },
-  (
-    'hubot blacklist add hshong',
-  );
+push @{ $robot->{receive} }, ( 'hubot blacklist add hshong', );
 
 $robot->run;
 
