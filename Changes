@@ -1,5 +1,8 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 
+0.1.1    Tue Apr  2 17:53:48 2013 KST
+    - [dice] roll a dice
+
 0.1.0    Thu Jan  3 04:36:53 2013 KST
     - [bugzilla] display product & component info
     - [uptime] fix uptime return value to expected
