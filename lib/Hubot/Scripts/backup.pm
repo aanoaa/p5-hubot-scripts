@@ -13,6 +13,14 @@ sub load {
         interval => $ENV{HUBOT_BACKUP_INTERVAL} || 60 * 60,
         cb       => sub { $robot->brain->save }
     );
+
+    $robot->respond(
+        qr/backup$/i,
+        sub {
+            $robot->brain->save;
+            shift->send("OK, saved the robot's brain");
+        }
+    );
 }
 
 1;
@@ -23,7 +31,8 @@ Hubot::Scripts::backup
 
 =head1 SYNOPSIS
 
-    backup - save robot's brain data to external storage automatically if used; this is *NOT COMMAND* like others; just work
+    hubot backup - save robot's brain data to external storage immediately if used
+    backup (this is *NOT COMMAND*) - save robot's brain data to external storage automatically if used; just work
 
 =head1 CONFIGURATION
 
