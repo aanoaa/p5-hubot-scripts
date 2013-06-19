@@ -74,6 +74,10 @@ Tell Hubot to send a user a message when present in the room
     me> bug <id>|<keyword>
     me> bug search <keyword>
 
+=item storable
+
+using file as an external storage via L<Storable> for robot's brain
+
 =back
 
 =head1 SEE ALSO
