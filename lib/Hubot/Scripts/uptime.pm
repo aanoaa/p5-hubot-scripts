@@ -1,6 +1,7 @@
 package Hubot::Scripts::uptime;
 use strict;
 use warnings;
+use Storable;
 use DateTime;
 use DateTime::Format::Duration;
 
@@ -13,8 +14,15 @@ sub load {
             my $msg = shift;
             my $ymd = $start->ymd('/');
             my $hms = $start->hms;
-            $msg->send($ymd .' '. $hms);
-            uptimeMe( $msg, $start, sub { $msg->send(shift) } );
+            my @ymdhms = "$ymd-$hms";
+            if ( -f 'ymdhms.dat' ) {
+                my $started_time = retrieve('ymdhms.dat');
+                my $die_during_time = $started_time->[0];
+                $msg->send('Hubot die time ' . $started_time->[0]);
+                $msg->send('Hubot start time ' . "@ymdhms");
+                uptimeMe( $msg, $start, sub { $msg->send(shift) } );
+            }
+            store \@ymdhms, 'ymdhms.dat';
         }
     );
 }
@@ -29,6 +37,10 @@ sub uptimeMe {
           . '%H hours, %M minutes, %S seconds' );
     $d->set_normalizing(1);
     $cb->( "I've been sentient for " . $d->format_duration($duration) );
+}
+
+sub stop_during_time {
+        
 }
 
 1;
