@@ -11,6 +11,9 @@ sub load {
         qr/uptime/i,
         sub {
             my $msg = shift;
+            my $ymd = $start->ymd('/');
+            my $hms = $start->hms;
+            $msg->send($ymd .' '. $hms);
             uptimeMe( $msg, $start, sub { $msg->send(shift) } );
         }
     );
