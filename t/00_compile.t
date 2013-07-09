@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 13;
+use Test::More tests => 14;
 
 BEGIN { use_ok 'Hubot::Scripts::Bundle' }
 BEGIN { use_ok 'Hubot::Scripts::ping' }
@@ -14,3 +14,4 @@ BEGIN { use_ok 'Hubot::Scripts::blacklist' }
 BEGIN { use_ok 'Hubot::Scripts::backup' }
 BEGIN { use_ok 'Hubot::Scripts::op' }
 BEGIN { use_ok 'Hubot::Scripts::storable' }
+BEGIN { use_ok 'Hubot::Scripts::print' }
