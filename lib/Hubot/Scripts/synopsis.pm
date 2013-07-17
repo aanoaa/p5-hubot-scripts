@@ -27,9 +27,14 @@ sub load {
                     $SYNOPSIS =~ s{</pre>}{};
                     $SYNOPSIS =~ s{^ *\n$}{}m;
                     $SYNOPSIS =~ s{(\s+$)}{}s;
+                    $SYNOPSIS =~ s{&amp;}{&}g;
+                    $SYNOPSIS =~ s{&quot;}{"}g;
+                    $SYNOPSIS =~ s{&lt;}{>}g;
+                    $SYNOPSIS =~ s{&gt;}{>}g;
 
                     my @SYNOPSIS = split /\n/, $SYNOPSIS;
-                    $msg->send(splice @SYNOPSIS, 0, 8);
+                    $SYNOPSIS[8] = '... and more' if @SYNOPSIS > 8;
+                    $msg->send(splice @SYNOPSIS, 0, 9);
                 }
             );
         }
