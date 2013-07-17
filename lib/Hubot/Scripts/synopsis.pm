@@ -29,7 +29,7 @@ sub load {
                     $SYNOPSIS =~ s{(\s+$)}{}s;
                     $SYNOPSIS =~ s{&amp;}{&}g;
                     $SYNOPSIS =~ s{&quot;}{"}g;
-                    $SYNOPSIS =~ s{&lt;}{>}g;
+                    $SYNOPSIS =~ s{&lt;}{<}g;
                     $SYNOPSIS =~ s{&gt;}{>}g;
 
                     my @SYNOPSIS = split /\n/, $SYNOPSIS;
