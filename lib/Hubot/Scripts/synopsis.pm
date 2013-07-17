@@ -29,6 +29,7 @@ sub load {
                     $SYNOPSIS =~ s{(\s+$)}{}s;
                     $SYNOPSIS =~ s{&amp;}{&}g;
                     $SYNOPSIS =~ s{&quot;}{"}g;
+                    $SYNOPSIS =~ s{&#39;}{'}g;
                     $SYNOPSIS =~ s{&lt;}{<}g;
                     $SYNOPSIS =~ s{&gt;}{>}g;
 
