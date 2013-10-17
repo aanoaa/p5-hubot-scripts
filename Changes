@@ -1,6 +1,9 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 # git shortlog --no-merges master --not <tag>
 
+0.1.7    Fri Oct 18 05:48:26 2013 KST
+    - [sayhttpd] added sayhttpd - ported say_httpd from NodeJS Hubot (thanks @hggh)
+
 0.1.6    Wed Oct 16 14:57:14 2013 KST
     - [rules] Ported 'the rules' from NodeJS Hubot to p5-Hubot (thanks @hggh)
 
