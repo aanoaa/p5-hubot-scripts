@@ -3,6 +3,7 @@ use utf8;
 use strict;
 use warnings;
 use JSON::XS;
+use URI;
 
 my %PRIORITY_MAP = (
     '---'   => '☆☆☆☆☆',
@@ -27,7 +28,7 @@ sub load {
                     { ids => [$query] },
                     sub {
                         my ( $body, $hdr ) = @_;
-                        speak_bug( $msg, $body, $hdr );
+                        speak_bug( $msg, $body, $hdr, $client );
                     }
                 );
             }
@@ -43,7 +44,7 @@ sub load {
                 { summary => $msg->match->[0] },
                 sub {
                     my ( $body, $hdr ) = @_;
-                    speak_bug( $msg, $body, $hdr );
+                    speak_bug( $msg, $body, $hdr, $client );
                 }
             );
         }
@@ -59,7 +60,7 @@ sub load {
                 { ids => [ $msg->match->[0] ] },
                 sub {
                     my ( $body, $hdr ) = @_;
-                    speak_bug( $msg, $body, $hdr );
+                    speak_bug( $msg, $body, $hdr, $client );
                 }
             );
         }
@@ -67,19 +68,29 @@ sub load {
 }
 
 sub speak_bug {
-    my ( $msg, $body, $hdr ) = @_;
+    my ( $msg, $body, $hdr, $client ) = @_;
     my $data = decode_json($body);
     my $bug = @{ $data->{result}{bugs} ||= [] }[0];
-    $msg->send(
-        sprintf "#%s [%s-%s] %s - [%s, %s, %s]",
-        $bug->{id},
-        $bug->{product},
-        $bug->{component},
-        $bug->{summary},
-        $bug->{status},
-        $bug->{assigned_to},
-        $PRIORITY_MAP{ $bug->{priority} }
-    ) if $bug;
+
+    if ($bug) {
+        $msg->send(
+            sprintf "#%s [%s-%s] %s - [%s, %s, %s]",
+            $bug->{id},
+            $bug->{product},
+            $bug->{component},
+            $bug->{summary},
+            $bug->{status},
+            $bug->{assigned_to},
+            $PRIORITY_MAP{ $bug->{priority} }
+        );
+
+        if ($client->{quickserarch_url}) {
+            $msg->send(
+                sprintf $client->{quickserarch_url},
+                $bug->{id}
+            );
+        }
+    }
 }
 
 package JSONRPC;
@@ -93,6 +104,14 @@ sub new {
     $ref->{http} = AnyEvent::HTTP::ScopedClient->new( $ref->{url} );
     $ref->{username} ||= $ENV{HUBOT_BZ_USERNAME};
     $ref->{password} ||= $ENV{HUBOT_BZ_PASSWORD};
+
+    my $u = URI->new($ref->{url});
+    if ($u->path eq '/jsonrpc.cgi') {
+        $u->path('/buglist.cgi');
+        $u->query('quicksearch=%s');
+        $ref->{quickserarch_url} = $u;
+    }
+
     my $self = bless $ref, $class;
     $self->login if $ref->{username} && $ref->{password};
     return $self;
