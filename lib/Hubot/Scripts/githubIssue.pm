@@ -30,7 +30,8 @@ sub load {
                         $url = "https://github.com";
                     }
                     else {
-                        $url = $base_url =~ s/\/api\/v3//r;
+                        $url = $base_url;
+                        $url =~ s/\/api\/v3//;
                     }
                     $msg->send(
                         "Issue $issue_number: $issue_title $url/$bot_github_repo/issues/$issue_number"
@@ -40,6 +41,8 @@ sub load {
         }
     );
 }
+
+1;
 
 package githubot;
 use strict;
