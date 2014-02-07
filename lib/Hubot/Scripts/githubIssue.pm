@@ -42,8 +42,6 @@ sub load {
     );
 }
 
-1;
-
 package githubot;
 use strict;
 use warnings;
