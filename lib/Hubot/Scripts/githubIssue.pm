@@ -90,7 +90,7 @@ sub request {
         {
             Accept => 'application/vnd.github.'
                 . $self->{apiVersion} . '+json',
-            'User-Agent' => "p5-GitHubot/$VERSION"
+            'User-Agent' => "p5-GitHubot"
         }
     );
     my $oauth_token = $self->{token};
