@@ -57,7 +57,7 @@ sub load {
             $msg->message->finish;
             $client->call(
                 'Bug.get',
-                { ids => [ $msg->match->[0] ] },
+                { ids => [$msg->match->[0]] },
                 sub {
                     my ( $body, $hdr ) = @_;
                     speak_bug( $msg, $body, $hdr, $client );
@@ -84,11 +84,8 @@ sub speak_bug {
             $PRIORITY_MAP{ $bug->{priority} }
         );
 
-        if ($client->{quickserarch_url}) {
-            $msg->send(
-                sprintf $client->{quickserarch_url},
-                $bug->{id}
-            );
+        if ( $client->{quickserarch_url} ) {
+            $msg->send( sprintf $client->{quickserarch_url}, $bug->{id} );
         }
     }
 }
@@ -105,8 +102,8 @@ sub new {
     $ref->{username} ||= $ENV{HUBOT_BZ_USERNAME};
     $ref->{password} ||= $ENV{HUBOT_BZ_PASSWORD};
 
-    my $u = URI->new($ref->{url});
-    if ($u->path eq '/jsonrpc.cgi') {
+    my $u = URI->new( $ref->{url} );
+    if ( $u->path eq '/jsonrpc.cgi' ) {
         $u->path('/buglist.cgi');
         $u->query('quicksearch=%s');
         $ref->{quickserarch_url} = $u;
@@ -119,8 +116,8 @@ sub new {
 
 sub call {
     my ( $self, $method, $params, $cb ) = @_;
-    $params =
-      encode_json( { method => $method, params => $params, version => '1.1' } );
+    $params = encode_json(
+        { method => $method, params => $params, version => '1.1' } );
     $self->{http}->header(
         {
             cookie => $self->{cookie} || '',
@@ -128,13 +125,13 @@ sub call {
             'Content-Type' => 'application/json',
             'User-Agent'   => 'p5-hubot-bugzilla-script-jsonrpc-client',
         }
-      )->post(
+        )->post(
         $params,
         sub {
             my ( $body, $hdr ) = @_;
             $cb->( $body, $hdr ) if $hdr->{Status} =~ m/^2/;
         }
-      );
+        );
 }
 
 sub set_cookies {
@@ -146,10 +143,7 @@ sub login {
     my $self = shift;
     $self->call(
         'User.login',
-        {
-            login    => $self->{username},
-            password => $self->{password}
-        },
+        { login => $self->{username}, password => $self->{password} },
         sub {
             my ( $body, $hdr ) = @_;
             $self->set_cookies($hdr);

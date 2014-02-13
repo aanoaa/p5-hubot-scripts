@@ -5,28 +5,28 @@ use JSON;
 
 sub load {
     my $github = githubot->new;
-    my ($class, $robot) = @_;
+    my ( $class, $robot ) = @_;
     $robot->hear(
         qr/((\S*|^)?#(\d+)).*/,
         sub {
             my $msg             = shift;
             my $issue_number    = $msg->match->[2];
-            my $bot_github_repo = $github->qualified_repo($msg->match->[1]
-                  // $ENV{HUBOT_GITHUB_REPO});
+            my $bot_github_repo = $github->qualified_repo( $msg->match->[1]
+                    // $ENV{HUBOT_GITHUB_REPO} );
 
             my $issue_title = '';
             $github->request(
                 'get',
                 "/repos/$bot_github_repo/issues/$issue_number",
                 sub {
-                    my ($body, $hdr) = @_;
-                    return if (!$body || $hdr->{Status} !~ /^2/);
+                    my ( $body, $hdr ) = @_;
+                    return if ( !$body || $hdr->{Status} !~ /^2/ );
                     my $data = decode_json($body);
                     $issue_title = $data->{title};
                     my $base_url = $ENV{HUBOT_GITHUB_API}
-                      // 'https://api.github.com';
+                        // 'https://api.github.com';
                     my $url;
-                    unless ($ENV{HUBOT_GITHUB_API}) {
+                    unless ( $ENV{HUBOT_GITHUB_API} ) {
                         $url = "https://github.com";
                     }
                     else {
@@ -47,10 +47,8 @@ use strict;
 use warnings;
 use AnyEvent::HTTP::ScopedClient;
 
-use version; our $VERSION = version->declare("v0.0.1");
-
 sub new {
-    my ($class, $opts) = @_;
+    my ( $class, $opts ) = @_;
 
     $opts->{token}       = $ENV{HUBOT_GITHUB_TOKEN};
     $opts->{defaultRepo} = $ENV{HUBOT_GITHUB_REPO};
@@ -61,15 +59,15 @@ sub new {
 }
 
 sub qualified_repo {
-    my ($self, $repo) = @_;
+    my ( $self, $repo ) = @_;
     unless ($repo) {
-        unless ($repo = $self->{defaultRepo}) {
+        unless ( $repo = $self->{defaultRepo} ) {
             print STDERR "Default Github repo not specified";
             return;
         }
     }
     $repo = lc $repo;
-    return $repo unless index($repo, '/') == -1;
+    return $repo unless index( $repo, '/' ) == -1;
     my $user = $self->{defaultUser};
     unless ($user) {
         print STDERR "Default Github user not specified";
@@ -79,11 +77,11 @@ sub qualified_repo {
 }
 
 sub request {
-    my ($self, $verb, $url, $data, $cb) = @_;
-    ($cb, $data) = ($data, undef) unless $cb;
+    my ( $self, $verb, $url, $data, $cb ) = @_;
+    ( $cb, $data ) = ( $data, undef ) unless $cb;
 
     my $url_api_base = $self->{apiRoot};
-    if ($url !~ m/^http/) {
+    if ( $url !~ m/^http/ ) {
         $url = "/$url" unless $url =~ m|^/|;
         $url = $url_api_base . $url;
     }
@@ -91,14 +89,14 @@ sub request {
     $req = $req->header(
         {
             Accept => 'application/vnd.github.'
-              . $self->{apiVersion} . '+json',
+                . $self->{apiVersion} . '+json',
             'User-Agent' => "p5-GitHubot/$VERSION"
         }
     );
     my $oauth_token = $self->{token};
-    $req->header('Authorization', "token $oauth_token") if $oauth_token;
+    $req->header( 'Authorization', "token $oauth_token" ) if $oauth_token;
     my $method = lc $verb;
-    $req->$method($data, $cb);
+    $req->$method( $data, $cb );
 }
 
 1;

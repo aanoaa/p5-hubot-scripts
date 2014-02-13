@@ -20,10 +20,10 @@ sub uptimeMe {
     my ( $msg, $start, $cb ) = @_;
     my $now      = DateTime->now;
     my $duration = $now - $start;
-    my $d =
-      DateTime::Format::Duration->new(
+    my $d
+        = DateTime::Format::Duration->new(
         pattern => '%Y years, %m months, %e days, '
-          . '%H hours, %M minutes, %S seconds' );
+            . '%H hours, %M minutes, %S seconds' );
     $d->set_normalizing(1);
     $cb->( "I've been sentient for " . $d->format_duration($duration) );
 }

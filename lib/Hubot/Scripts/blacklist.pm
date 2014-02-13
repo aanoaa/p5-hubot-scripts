@@ -6,20 +6,24 @@ use Try::Tiny;
 sub load {
     my ( $class, $robot ) = @_;
     $robot->brain->{data}{blacklist}{subscriber} ||= {};
-    $robot->brain->{data}{blacklist}{patterns} ||= [];
-    print STDERR "you have to set env HUBOT_BLACKLIST_MANAGER" unless $ENV{HUBOT_BLACKLIST_MANAGER};
+    $robot->brain->{data}{blacklist}{patterns}   ||= [];
+    print STDERR "you have to set env HUBOT_BLACKLIST_MANAGER"
+        unless $ENV{HUBOT_BLACKLIST_MANAGER};
     $robot->respond(
         qr/blacklist add (.*)$/i,
         sub {
             my $msg = shift;
 
-            return unless checkPermission($robot, $msg);
+            return unless checkPermission( $robot, $msg );
 
             my $pattern = $msg->match->[0];
             try {
-                qr/$pattern/ and push @{ $robot->brain->{data}{blacklist}{patterns} }, $pattern;
+                qr/$pattern/
+                    and push @{ $robot->brain->{data}{blacklist}{patterns} },
+                    $pattern;
                 $msg->send("OK, added <$pattern> to blacklist");
-            } catch {
+            }
+            catch {
                 $msg->send("Failed to add <$pattern> to blacklist: $_");
             };
         }
@@ -28,9 +32,9 @@ sub load {
     $robot->respond(
         qr/blacklist$/i,
         sub {
-            my $msg = shift;
+            my $msg   = shift;
             my $match = $msg->match->[0];
-            my @list = @{ $robot->brain->{data}{blacklist}{patterns} };
+            my @list  = @{ $robot->brain->{data}{blacklist}{patterns} };
             if (@list) {
                 my $index = 0;
                 map {
@@ -38,7 +42,8 @@ sub load {
                     $index++;
                 } @list;
                 $msg->send(@list);
-            } else {
+            }
+            else {
                 $msg->send('no blacklist');
             }
         }
@@ -49,13 +54,14 @@ sub load {
         sub {
             my $msg = shift;
 
-            return unless checkPermission($robot, $msg);
+            return unless checkPermission( $robot, $msg );
 
             my $index = $msg->match->[0];
-            my @list = @{ $robot->brain->{data}{blacklist}{patterns} };
-            if ($index > @list - 1) {
+            my @list  = @{ $robot->brain->{data}{blacklist}{patterns} };
+            if ( $index > @list - 1 ) {
                 $msg->send("Can't delete [$index] from blacklist");
-            } else {
+            }
+            else {
                 my $pattern = splice @list, $index, 1;
                 $msg->send("Deleted [$index] - <$pattern> from blacklist");
                 $robot->brain->{data}{blacklist}{patterns} = \@list;
@@ -66,7 +72,7 @@ sub load {
     $robot->respond(
         qr/blacklist subscribe$/i,
         sub {
-            my $msg = shift;
+            my $msg  = shift;
             my $name = $msg->message->user->{name};
             $robot->brain->{data}{blacklist}{subscriber}{$name}++;
             $msg->send("OK, $name subscribes blacklist");
@@ -76,7 +82,7 @@ sub load {
     $robot->respond(
         qr/blacklist unsubscribe$/i,
         sub {
-            my $msg = shift;
+            my $msg  = shift;
             my $name = $msg->message->user->{name};
             delete $robot->brain->{data}{blacklist}{subscriber}{$name};
             $msg->send("OK, $name unsubscribes blacklist");
@@ -85,16 +91,19 @@ sub load {
 
     $robot->enter(
         sub {
-            my $msg = shift;
+            my $msg  = shift;
             my $user = $msg->message->user->{name};
             ## support IRC adapter only
-            if ('Hubot::Adapter::Irc' eq ref $robot->adapter) {
+            if ( 'Hubot::Adapter::Irc' eq ref $robot->adapter ) {
                 my $whois = $robot->adapter->whois($user);
-                for my $pattern (@{ $robot->brain->{data}{blacklist}{patterns} }) {
+                for my $pattern (
+                    @{ $robot->brain->{data}{blacklist}{patterns} } )
+                {
                     my $regex = qr/$pattern/;
-                    if ($whois =~ m/$regex/) {
-                        my @subscriber = keys %{ $robot->brain->{data}{blacklist}{subscriber} };
-                        notify($robot, $msg, $pattern, @subscriber);
+                    if ( $whois =~ m/$regex/ ) {
+                        my @subscriber = keys
+                            %{ $robot->brain->{data}{blacklist}{subscriber} };
+                        notify( $robot, $msg, $pattern, @subscriber );
                         last;
                     }
                 }
@@ -104,16 +113,20 @@ sub load {
 }
 
 sub checkPermission {
-    my ($robot, $msg) = @_;
+    my ( $robot, $msg ) = @_;
     my @manager = split /,/, $ENV{HUBOT_BLACKLIST_MANAGER} || '';
     unless (@manager) {
-        $msg->send("oops! no managers. " . $robot->name . "'s owner has to read the documentation");
+        $msg->send( "oops! no managers. "
+                . $robot->name
+                . "'s owner has to read the documentation" );
         return;
     }
 
     my $name = $msg->message->user->{name};
-    unless (grep { /$name/ } @manager) {
-        $msg->send("you don't have permission. to add blacklist, asking to managers: $ENV{HUBOT_BLACKLIST_MANAGER}");
+    unless ( grep {/$name/} @manager ) {
+        $msg->send(
+            "you don't have permission. to add blacklist, asking to managers: $ENV{HUBOT_BLACKLIST_MANAGER}"
+        );
         return;
     }
 
@@ -121,10 +134,10 @@ sub checkPermission {
 }
 
 sub notify {
-    my ($robot, $res, $patt, @subs) = @_;
+    my ( $robot, $res, $patt, @subs ) = @_;
     for my $sub (@subs) {
         my $to = $robot->userForName($sub);
-        $res->whisper($to, "blacklist[$patt] joined channel");
+        $res->whisper( $to, "blacklist[$patt] joined channel" );
     }
 }
 
