@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 16;
+use Test::More tests => 17;
 
 BEGIN { use_ok 'Hubot::Scripts::Bundle' }
 BEGIN { use_ok 'Hubot::Scripts::ping' }
@@ -17,3 +17,4 @@ BEGIN { use_ok 'Hubot::Scripts::storable' }
 BEGIN { use_ok 'Hubot::Scripts::print' }
 BEGIN { use_ok 'Hubot::Scripts::rules' }
 BEGIN { use_ok 'Hubot::Scripts::sayhttpd' }
+BEGIN { use_ok 'Hubot::Scripts::githubIssue' }

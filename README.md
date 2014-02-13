@@ -2,7 +2,7 @@
 
 ### Installation ###
 
-    $ cpanm Hubot::Scripts::Bundle
+    $ cpanm --installdeps .
 
 ### Documentation ###
 

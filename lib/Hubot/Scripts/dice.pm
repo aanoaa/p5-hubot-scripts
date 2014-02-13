@@ -19,8 +19,8 @@ sub load {
 }
 
 sub roll {
-    my $max = shift;
-    my @pool = shuffle 1..$max;
+    my $max  = shift;
+    my @pool = shuffle 1 .. $max;
     return pop @pool;
 }
 

@@ -6,7 +6,7 @@ sub load {
     my ( $class, $robot ) = @_;
 
     my $nickserv = $ENV{HUBOT_IRC_NICKSERV} || 'NickServ';
-    my @allow_accounts = split(/,/, $ENV{HUBOT_OP_ACCOUNTS} || '');
+    my @allow_accounts = split( /,/, $ENV{HUBOT_OP_ACCOUNTS} || '' );
     my $room = '';
 
     $robot->enter(
@@ -16,10 +16,10 @@ sub load {
             $room = $msg->message->user->{room};
             my $user = $msg->message->user->{name};
             ## support IRC adapter only
-            if ('Hubot::Adapter::Irc' eq ref $robot->adapter) {
+            if ( 'Hubot::Adapter::Irc' eq ref $robot->adapter ) {
                 my $to = $robot->userForName($nickserv);
                 ## maybe need more common interface for adapters
-                $robot->adapter->irc->send_srv('WHOIS' => $user);
+                $robot->adapter->irc->send_srv( 'WHOIS' => $user );
             }
         }
     );
@@ -29,12 +29,15 @@ sub load {
             my $msg = shift;
 
             my $text = $msg->message->text;
-            if (my ($nick, $account) = $text =~ m/^([^ ]+) is logged in as (.+)$/) {
+            if ( my ( $nick, $account )
+                = $text =~ m/^([^ ]+) is logged in as (.+)$/ )
+            {
                 ## freenode only?
                 return unless grep { $account eq $_ } @allow_accounts;
-                if ($robot->mode eq '+o') {
+                if ( $robot->mode eq '+o' ) {
                     ## maybe need more common interface for adapters
-                    $robot->adapter->irc->send_srv('MODE', $room, '+o', $nick);
+                    $robot->adapter->irc->send_srv( 'MODE', $room, '+o',
+                        $nick );
                 }
             }
         }
