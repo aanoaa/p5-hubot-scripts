@@ -1,5 +1,10 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
-# git shortlog --no-merges master --not <tag>
+# git shortlog --no-merges develop --not <tag>
+
+0.1.8    Fri Feb 14 01:46:35 2014 KST
+    - [bugzilla] speak quicksearch url
+    - [githubissue] added
+    - perltidy all scripts
 
 0.1.7    Fri Oct 18 05:48:26 2013 KST
     - [sayhttpd] added sayhttpd - ported say_httpd from NodeJS Hubot (thanks @hggh)
