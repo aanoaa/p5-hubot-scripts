@@ -1,6 +1,7 @@
 package Hubot::Scripts::sayhttpd;
 use strict;
 use warnings;
+use Encode qw/decode_utf8/;
 use JSON;
 
 sub load {
@@ -56,7 +57,7 @@ sub load {
                 return;
             }
             my $user = Hubot::User->new( { 'room' => $json->{'room'} } );
-            $robot->adapter->send( $user, $json->{'message'} );
+            $robot->adapter->send( $user, decode_utf8( $json->{'message'} ) );
             $req->respond(
                 { content => ['text/json', "{ 'status': 'OK' }"] } );
         }
