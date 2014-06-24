@@ -1,12 +1,3 @@
-package { {$name} };
-{
-    {
-        use strict;
-        use vars '$foo';
-        $Text::Template::SILENTLY;    # same as '';
-    }
-}
-
 # ABSTRACT: {{$name}}
 use strict;
 use warnings;
@@ -59,13 +50,12 @@ need more description?
 
 =head1 AUTHOR
 
-Your name <your@email.com>
+Hyungsuk Hong <hshong@perl.kr>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by <Your Name>.
+The MIT License (MIT)
 
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
+Copyright (c) 2014, Hyungsuk Hong
 
 =cut
