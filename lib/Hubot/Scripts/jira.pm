@@ -139,6 +139,8 @@ Hubot::Scripts::jira
 
 =head1 SYNOPSIS
 
+Inform channel members about new created issues in JIRA.
+
 =head1 CONFIGURATION
 
 =over
@@ -151,11 +153,26 @@ Hubot::Scripts::jira
 
 HTTP Jira Interface WebHook Interface with SERECT file.
 
-Create a JIRA Webhook in the JIRA admin interface. Use as URL to p5-Hubot:
+Create a JIRA Webhook in the JIRA admin interface with the following options:
 
-https://yourbot.com/hubot/jira?secret=123456&room=%23foobar
+
+ * URL:
+   https://yourbot.com/hubot/jira?secret=123456&room=%23foobar
+
+ * Exclude details:
+   No
+
+ * JQL:
+   (nothing) = All issues
+
+ * Events:
+   Issue Created
+
+Please use the environment variable HUBOT_JIRA_WEBHOOK_SECRET to set the secret key.
 
 Your room is #foobar, you need to escape the '#' for JIRA.
+
+This p5 hubot plugin was tested with JIRA 6.1.7.
 
 =head1 AUTHOR
 
