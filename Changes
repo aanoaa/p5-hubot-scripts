@@ -1,6 +1,12 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 # git shortlog --no-merges develop --not <tag>
 
+    - update dzil profile
+    - added jira web hook event listner
+    - updated readme
+    - added <3 script
+    - using content-type application/json
+
 0.1.8    Fri Feb 14 01:46:35 2014 KST
     - [bugzilla] speak quicksearch url
     - [githubissue] added
