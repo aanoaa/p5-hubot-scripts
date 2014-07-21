@@ -11,7 +11,7 @@ sub load {
             my ( $httpd, $req ) = @_;
             my $json = undef;
 
-            eval { $json = decode_json( join( "", $req->params() ) ); };
+            eval { $json = decode_json( $req->{content} ); };
             if ($@) {
                 $req->respond(
                     [
@@ -132,7 +132,9 @@ HTTP Say Interface with SERECT file.
 
 =head1 JSON API
 
-  curl -X POST -d '{"room": "#test-channel", "secret": "foobar", "message": "Hello from JSON" }' http://localhost:8080/hubot/say
+  Please ensure that the http client sending Content-Type "application/json".
+
+  curl -H 'Content-Type: application/json' -d '{"room": "#test-channel", "secret": "foobar", "message": "Hello from JSON" }' http://localhost:8080/hubot/say
 
 =head1 AUTHOR
 
