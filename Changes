@@ -1,6 +1,9 @@
 go to https://github.com/aanoaa/p5-hubot-scripts/issues for the roadmap and known issues.
 # git shortlog --no-merges develop --not <tag>
 
+0.1.10    Mon Sep 22 15:57:43 2014 KST
+    - [bugzilla] support `Bugzilla_token` parameter
+
 0.1.9    Mon Jul 21 13:42:23 2014 KST
     - update dzil profile
     - added jira web hook event listner
