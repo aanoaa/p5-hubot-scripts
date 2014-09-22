@@ -2,7 +2,7 @@ package Hubot::Scripts::bugzilla;
 use utf8;
 use strict;
 use warnings;
-use JSON::XS;
+use JSON;
 use URI;
 
 my %PRIORITY_MAP = (
@@ -116,6 +116,7 @@ sub new {
 
 sub call {
     my ( $self, $method, $params, $cb ) = @_;
+    $params->{Bugzilla_token} = $self->{token} if $self->{token};
     $params = encode_json(
         { method => $method, params => $params, version => '1.1' } );
     $self->{http}->header(
@@ -134,6 +135,22 @@ sub call {
         );
 }
 
+sub set_cookies_or_token {
+    my ( $self, $hdr, $body ) = @_;
+    if ( $hdr->{'set-cookie'} ) {
+        $self->set_cookies($hdr);
+    }
+    else {
+        my $data = decode_json($body);
+        $self->set_token( $data->{result}{token} );
+    }
+}
+
+sub set_token {
+    my ( $self, $token ) = @_;
+    $self->{token} = $token;
+}
+
 sub set_cookies {
     my ( $self, $hdr ) = @_;
     $self->{cookie} = $hdr->{'set-cookie'};
@@ -146,7 +163,7 @@ sub login {
         { login => $self->{username}, password => $self->{password} },
         sub {
             my ( $body, $hdr ) = @_;
-            $self->set_cookies($hdr);
+            $self->set_cookies_or_token( $hdr, $body );
         }
     );
 }
