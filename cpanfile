@@ -3,6 +3,7 @@ requires 'AnyEvent::HTTP::ScopedClient';
 requires 'DateTime';
 requires 'DateTime::Format::Duration';
 requires 'Encode';
+requires 'Hubot';
 requires 'JSON';
 requires 'JSON::XS';
 requires 'Lingua::KO::Hangul::Util';
